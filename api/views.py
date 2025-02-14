@@ -47,6 +47,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.select_related('user', 'delivery').all()
     serializer_class = OrderSerializer
+    authentication_classes = [URLTokenAuthentication]
+    permission_classes = [AllowAny]
+    pagination_class = StandardResultsSetPagination
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -189,6 +192,9 @@ class PaymentUploadAPIView(APIView):
 
 
 class OrderStatusAPIView(APIView):
+    authentication_classes = [URLTokenAuthentication]
+    permission_classes = [AllowAny]
+    pagination_class = StandardResultsSetPagination
     def post(self, request, order_id):
         status = request.data.get("status")
         if not status:
