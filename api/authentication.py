@@ -3,22 +3,36 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.models import AnonymousUser
 from .models import Tokens
 
+
 class URLTokenAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        # Agar user allaqachon login qilgan bo'lsa, to'g'ridan-to'g'ri qaytarish
-        if getattr(request, "user", None) and getattr(request.user, "is_authenticated", False):
+        """
+        Authenticate using either:
+        1. URL token if present
+        2. Already authenticated user
+        """
+        # First check if token is provided in URL
+        token = request.parser_context.get('kwargs', {}).get('token')
+        
+        if token:
+            try:
+                # Try to get user via token
+                token_obj = Tokens.objects.select_related("user").get(token=token)
+                return (token_obj.user, None)
+            except Tokens.DoesNotExist:
+                raise AuthenticationFailed("Noto'g'ri token!")
+        
+        # If no token, check if user is already authenticated
+        if request.user and request.user.is_authenticated:
             return (request.user, None)
-
-        # URL orqali token olish
-        token = request.parser_context['kwargs'].get('token')
-        if not token:
-            return None  # Token yo‘q bo‘lsa, autentifikatsiya qilmasdan qaytish
-
-        # Tokenni tekshirish
-        try:
-            token_obj = Tokens.objects.select_related("user").get(token=token)
-            return (token_obj.user, None)
-        except Tokens.DoesNotExist:
-            raise AuthenticationFailed("Noto‘g‘ri token!")
-
+            
+        # If neither token nor authenticated user, return None
+        # This will allow the request to proceed to permission classes
         return None
+
+    def authenticate_header(self, request):
+        """
+        Return a string to be used as the value of the `WWW-Authenticate`
+        header in a `401 Unauthenticated` response
+        """
+        return 'Token'
