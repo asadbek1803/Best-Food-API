@@ -5,6 +5,7 @@ django-filter
 drf-yasg  # API dokumentatsiya uchun (Swagger)
 channels 
 channels-redis
-django_filters
+django-filter
 django-modeltranslation
 gunicorn
+
