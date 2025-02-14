@@ -211,7 +211,7 @@ class SalesStatisticsAPIView(APIView):
         today = datetime.today()
         start_of_month = today.replace(day=1)
         
-        total_sales = Order.objects.aggregate(total=Sum('price'))['total'] or 0
+        total_sales = Order.objects.aggregate(total=Sum('total_amount'))['total'] or 0
         total_expenses = Order.objects.aggregate(expenses=Sum('cost'))['expenses'] or 0
         total_customers = Order.objects.aggregate(customers=Count('customer', distinct=True))['customers'] or 0
         total_orders = Order.objects.count()
@@ -220,7 +220,7 @@ class SalesStatisticsAPIView(APIView):
         last_month = start_of_month - timedelta(days=1)
         start_of_last_month = last_month.replace(day=1)
 
-        last_month_sales = Order.objects.filter(date__range=[start_of_last_month, last_month]).aggregate(total=Sum('price'))['total'] or 0
+        last_month_sales = Order.objects.filter(date__range=[start_of_last_month, last_month]).aggregate(total=Sum('total_amount'))['total'] or 0
         monthly_change = ((total_sales - last_month_sales) / last_month_sales * 100) if last_month_sales else 0
 
         data = {
