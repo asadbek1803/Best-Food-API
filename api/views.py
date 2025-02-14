@@ -218,7 +218,7 @@ class SalesStatisticsAPIView(APIView):
         last_month = start_of_month - timedelta(days=1)
         start_of_last_month = last_month.replace(day=1)
 
-        last_month_sales = Order.objects.filter(date__range=[start_of_last_month, last_month]).aggregate(total=Sum('total_amount'))['total'] or 0
+        last_month_sales = Order.objects.filter(created_at__range=[start_of_last_month, last_month]).aggregate(total=Sum('total_amount'))['total'] or 0
         monthly_change = ((total_sales - last_month_sales) / last_month_sales * 100) if last_month_sales else 0
 
         data = {
