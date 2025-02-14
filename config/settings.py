@@ -32,6 +32,7 @@ STORAGES = {
     },
 }
 
+CORS_ALLOW_ALL_ORIGINS = True  # Ehtiyot bo‘ling, faqat testda ishlating!
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     "django_filters",
     "modeltranslation",
     "drf_yasg",
+    "corsheaders",
 
     
     #Local
@@ -81,6 +83,7 @@ CHANNEL_LAYERS = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
