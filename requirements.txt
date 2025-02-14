@@ -8,4 +8,4 @@ channels-redis
 django-filter
 django-modeltranslation
 gunicorn
-
+environs
