@@ -18,7 +18,7 @@ class URLTokenAuthentication(BaseAuthentication):
             try:
                 # Try to get user via token
                 token_obj = Tokens.objects.filter(token=token).exists()
-                return (token_obj.user, None)
+                return token_obj
             except Tokens.DoesNotExist:
                 raise AuthenticationFailed("Noto'g'ri token!")
         
