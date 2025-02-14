@@ -1,5 +1,5 @@
 import requests
-from django.conf import settings
+from config import settings
 
 GRAPH_HOPPER_API_URL = "https://graphhopper.com/api/1/route"
 
