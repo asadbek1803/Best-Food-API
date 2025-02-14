@@ -212,8 +212,6 @@ class SalesStatisticsAPIView(APIView):
         start_of_month = today.replace(day=1)
         
         total_sales = Order.objects.aggregate(total=Sum('total_amount'))['total'] or 0
-        total_expenses = Order.objects.aggregate(expenses=Sum('cost'))['expenses'] or 0
-        total_customers = Order.objects.aggregate(customers=Count('customer', distinct=True))['customers'] or 0
         total_orders = Order.objects.count()
 
         # Oylik o'zgarish
@@ -226,9 +224,9 @@ class SalesStatisticsAPIView(APIView):
         data = {
             "total_sales": total_sales,
             "monthly_change": round(monthly_change, 2),
-            "total_expenses": total_expenses,
+            "total_expenses": 0,
             "total_orders": total_orders,
-            "total_customers": total_customers,
+            "total_customers": 0,
             "refunds": 0,  # Hozircha qaytarilgan pullar bo'yicha ma'lumot yo'q
         }
         
