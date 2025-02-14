@@ -9,3 +9,4 @@ django-filter
 django-modeltranslation
 gunicorn
 environs
+dj-database-url
