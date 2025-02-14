@@ -10,3 +10,5 @@ django-modeltranslation
 gunicorn
 environs
 dj-database-url
+requests
+
