@@ -7,4 +7,4 @@ channels
 channels-redis
 django_filters
 django-modeltranslation
-
+gunicorn
