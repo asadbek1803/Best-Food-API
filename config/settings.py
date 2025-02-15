@@ -33,6 +33,7 @@ STORAGES = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True  # Ehtiyot bo‘ling, faqat testda ishlating!
+CORS_ALLOWED_ORIGINS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
