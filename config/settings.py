@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "channels",
     "rest_framework",
+    'rest_framework.authtoken',
     "django_filters",
     "modeltranslation",
     "drf_yasg",
@@ -56,6 +57,16 @@ INSTALLED_APPS = [
 
 
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 
 # Django'da ishlatiladigan tillar
