@@ -44,6 +44,7 @@ class AdminLoginAPIView(APIView):
     Admin foydalanuvchilar uchun login API.
     Foydalanuvchi login parolni jo‘natadi va access_token oladi.
     """
+    authentication_classes = []  # Token tekshirishni o‘chiradi
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
