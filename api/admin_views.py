@@ -52,10 +52,10 @@ class AdminLoginAPIView(APIView):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            if user.is_staff:  # Faqat adminlarni kiritamiz
-                token, created = Token.objects.get_or_create(user=user)
-                return Response({"token": token.key}, status=status.HTTP_200_OK)
-            return Response({"error": "Siz admin emassiz"}, status=status.HTTP_403_FORBIDDEN)
+            # Faqat adminlarni kiritamiz
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)
+        
         
         return Response({"error": "Noto‘g‘ri login yoki parol"}, status=status.HTTP_400_BAD_REQUEST)
 
