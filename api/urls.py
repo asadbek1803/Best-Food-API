@@ -6,7 +6,7 @@ from .bot_views import (
 )
 
 router = DefaultRouter()
-router.register(r'users/', UserViewSet)
+router.register(r'users', UserViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'products', ProductViewSet)
 router.register(r'orders', OrderViewSet)
