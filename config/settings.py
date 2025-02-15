@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "modeltranslation",
     "drf_yasg",
     "corsheaders",
+    
 
     
     #Local

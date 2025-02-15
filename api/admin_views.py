@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .models import Order, Delivery, Product, Rating
 from .serializers import OrderSerializer, DeliverySerializer, UserSerializer, ProductSerializer, RatingSerializer
 from rest_framework.views import APIView
@@ -44,7 +44,9 @@ class AdminLoginAPIView(APIView):
     Admin foydalanuvchilar uchun login API.
     Foydalanuvchi login parolni jo‘natadi va access_token oladi.
     """
+    permission_classes = [AllowAny]
     authentication_classes = []  # Token tekshirishni o‘chiradi
+    
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
