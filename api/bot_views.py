@@ -24,7 +24,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     authentication_classes = [URLTokenAuthentication]
     pagination_class = StandardResultsSetPagination  
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -33,7 +33,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     pagination_class = StandardResultsSetPagination  
     authentication_classes = [URLTokenAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny]
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -41,7 +41,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     authentication_classes = [URLTokenAuthentication]
     pagination_class = StandardResultsSetPagination  
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny]
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -49,7 +49,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination  
     authentication_classes = [URLTokenAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny]
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -57,7 +57,7 @@ class CartViewSet(viewsets.ModelViewSet):
     serializer_class = CartSerializer
     authentication_classes = [URLTokenAuthentication]
     pagination_class = StandardResultsSetPagination  
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes =[AllowAny]
 
 
 class DeliveryViewSet(viewsets.ModelViewSet):
@@ -65,7 +65,7 @@ class DeliveryViewSet(viewsets.ModelViewSet):
     serializer_class = DeliverySerializer
     authentication_classes = [URLTokenAuthentication]
     pagination_class = StandardResultsSetPagination  
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny]
 
     def send_telegram_notification(self, telegram_id, message):
         BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
@@ -76,7 +76,7 @@ class DeliveryViewSet(viewsets.ModelViewSet):
 
 class DriverLocationAPIView(APIView):
     authentication_classes = [URLTokenAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny]
 
     def get(self, request, delivery_id):
         try:
@@ -88,7 +88,7 @@ class DriverLocationAPIView(APIView):
 
 class RouteAPIView(APIView):
     authentication_classes = [URLTokenAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         driver_location = request.data.get("driver_location")
