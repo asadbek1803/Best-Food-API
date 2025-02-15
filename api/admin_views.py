@@ -40,11 +40,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by("-created_at")[:10]
     serializer_class = OrderSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    pagination_class = StandardResultsSetPagination
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
+
+    filter_backends = [OrderingFilter]
+    ordering_fields = ["created_at", "total_amount"]
+    ordering = ["-created_at"]
 
 
 class AdminLoginAPIView(APIView):

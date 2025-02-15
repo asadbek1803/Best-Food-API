@@ -3,17 +3,47 @@ from .models import User, Category, Product, Cart, Delivery, Rating, Order, Orde
 
 
 
+from rest_framework import serializers
+from .models import User, Category, Product, Cart, Delivery, Rating, Order, OrderItem
+
+
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField()
+
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = ['product', 'quantity']
 
+    def get_product(self, obj):
+        request = self.context.get('request')
+        language = request.query_params.get('lang', 'uz')
+        return {
+            "id": obj.product.id,
+            "name": getattr(obj.product, f"{language}_name", obj.product.uz_name),
+            "price": obj.product.price,
+            "image": obj.product.image.url if obj.product.image else None
+        }
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(source='orderitem_set', many=True, read_only=True)
+    customer = serializers.SerializerMethodField()
+    status_display = serializers.SerializerMethodField()
+
     class Meta:
         model = Order
-        fields = "__all__"
+        fields = ['id', 'customer', 'total_amount', 'status', 'status_display', 'created_at', 'items']
+
+    def get_customer(self, obj):
+        return {
+            "id": obj.user.id,
+            "full_name": obj.user.full_name,
+            "username": obj.user.username,
+            "telegram_id": obj.user.telegram_id
+        }
+
+    def get_status_display(self, obj):
+        return obj.get_status_display()
 
 
 class EmptySerializer(serializers.Serializer):
