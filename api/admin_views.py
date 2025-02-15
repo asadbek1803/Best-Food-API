@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from .models import Order, Delivery, Product, Rating
-from .serializers import OrderSerializer, DeliverySerializer, UserSerializer, ProductSerializer, RatingSerializer
+from .models import Order, Delivery, Product, Rating, OrderItem
+from .serializers import OrderSerializer, DeliverySerializer, OrderItemSerializer, UserSerializer, ProductSerializer, RatingSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -21,6 +21,14 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
+
+class OrderItemsViewSet(viewsets.ModelViewSet):
+    queryset = OrderItem.objects.all()
+    lookup_field = "id"
+    serializer_class = OrderItemSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    pagination_class = StandardResultsSetPagination    
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

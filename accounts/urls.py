@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from api.admin_views import (
-    OrderViewSet, ProductViewSet, DeliveryViewSet, RatingViewSet,
+    OrderViewSet, ProductViewSet, DeliveryViewSet, RatingViewSet, OrderItemsViewSet,
     SalesStatisticsAPIView, AdminLoginAPIView, AdminLogoutAPIView, AdminProfileAPIView, UserViewSet
 )
 
@@ -11,6 +11,7 @@ router.register(r'products', ProductViewSet)
 router.register(r'delivery', DeliveryViewSet)
 router.register(r'ratings', RatingViewSet)
 router.register(r'users', UserViewSet)
+router.register(r'order/items', OrderItemsViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
