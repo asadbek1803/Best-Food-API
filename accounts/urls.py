@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from api.admin_views import (
     OrderViewSet, ProductViewSet, DeliveryViewSet, RatingViewSet, OrderItemsViewSet,
     SalesStatisticsAPIView, AdminLoginAPIView, AdminLogoutAPIView,
-    AdminProfileAPIView, UserViewSet, AdminTokenRefreshAPIView, AdminUpdateProfileAPIView
+    AdminProfileAPIView, UserViewSet,
+    AdminTokenRefreshAPIView, AdminUpdateProfileAPIView, CategoriesViewSet
 )
 
 router = DefaultRouter()
@@ -13,6 +14,7 @@ router.register(r'delivery', DeliveryViewSet, basename="admin-delivery")
 router.register(r'ratings', RatingViewSet, basename="admin-ratings")
 router.register(r'users', UserViewSet, basename="admin-users")
 router.register(r'order/items', OrderItemsViewSet, basename="admin-order-itmes")
+router.register(r'categories', CategoriesViewSet, basename="admin-categories")
 
 urlpatterns = [
     path('', include(router.urls)),

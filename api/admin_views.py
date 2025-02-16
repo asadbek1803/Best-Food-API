@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from .models import Order, Delivery, Product, Rating, OrderItem
-from .serializers import OrderSerializer, DeliverySerializer, OrderItemSerializer, UserSerializer, ProductSerializer, RatingSerializer
+from .models import Order, Delivery, Product, Rating, OrderItem, Category
+from .serializers import OrderSerializer, DeliverySerializer, CategorySerializer, OrderItemSerializer, UserSerializer, ProductSerializer, RatingSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -123,6 +123,14 @@ class ProductViewSet(viewsets.ModelViewSet):
 class DeliveryViewSet(viewsets.ModelViewSet):
     queryset = Delivery.objects.all()
     serializer_class = DeliverySerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+
+class CategoriesViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, IsAdminUser]
