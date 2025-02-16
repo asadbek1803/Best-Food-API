@@ -48,7 +48,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     ordering = ["-created_at"]
 
     def get_queryset(self):
-        return Order.objects.all().order_by("-created_at")[:10]  # ✅ To‘g‘ri
+        return Order.objects.all().order_by("-created_at")  # ✅ To‘g‘ri
 
 
 
