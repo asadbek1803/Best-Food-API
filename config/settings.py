@@ -34,7 +34,7 @@ STORAGES = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True  # Ehtiyot bo‘ling, faqat testda ishlating!
-BLACKLIST_AFTER_ROTATION=True
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     "modeltranslation",
     "drf_yasg",
     "corsheaders",
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
+    
     
 
     
@@ -65,11 +64,9 @@ INSTALLED_APPS = [
 
 
 REST_FRAMEWORK = {
-    
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT autentifikatsiyasi
+        'rest_framework.authentication.TokenAuthentication',  # Token orqali autentifikatsiya
     ),
-
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
@@ -77,12 +74,8 @@ REST_FRAMEWORK = {
 
 
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # 30 daqiqa yaroqlilik
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),  # 30 kun yaroqlilik
-    "ROTATE_REFRESH_TOKENS": True,  # Har foydalanishda yangilash
-    "BLACKLIST_AFTER_ROTATION": True,  # Eski tokenni qora ro‘yxatga kiritish
-}
+
+
 
 # Django'da ishlatiladigan tillar
 LANGUAGES = (

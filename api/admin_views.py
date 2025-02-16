@@ -5,6 +5,7 @@ from .serializers import OrderSerializer, DeliverySerializer, OrderItemSerialize
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Sum, Count
 from datetime import datetime, timedelta
@@ -13,8 +14,6 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, get_user_model
 from .models import User
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenRefreshView
 
 user = get_user_model()
 
@@ -52,12 +51,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Order.objects.all().order_by("-created_at")  # ✅ To‘g‘ri
 
-
 class AdminLoginAPIView(APIView):
-    """
-    Admin foydalanuvchilar uchun login API.
-    Foydalanuvchi login va parolni jo‘natadi va JWT tokenlar oladi.
-    """
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -65,49 +59,23 @@ class AdminLoginAPIView(APIView):
         password = request.data.get("password")
 
         user = authenticate(username=username, password=password)
-
-        if user is not None and user.is_staff:  # Faqat adminlarni kiritamiz
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                "access": str(refresh.access_token),
-                "refresh": str(refresh)
-            }, status=status.HTTP_200_OK)
-
+        if user is not None and user.is_staff:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)
+        
         return Response({"error": "Noto‘g‘ri login yoki parol"}, status=status.HTTP_400_BAD_REQUEST)
 
 class AdminLogoutAPIView(APIView):
-    """
-    Admin foydalanuvchilar uchun logout API.
-    Refresh tokenni qora ro‘yxatga tushiradi.
-    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         try:
-            refresh_token = request.data.get("refresh")
-            if not refresh_token:
-                return Response({"error": "Refresh token talab qilinadi!"}, status=status.HTTP_400_BAD_REQUEST)
-            
-            token = RefreshToken(refresh_token)
-            token.blacklist()  # Refresh tokenni qora ro‘yxatga tushiramiz
-
+            request.user.auth_token.delete()
             return Response({"message": "Chiqish muvaffaqiyatli bajarildi"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
-class AdminTokenRefreshView(TokenRefreshView):
-    """
-    Admin foydalanuvchilar uchun token yangilash API.
-    Foydalanuvchi refresh tokenni jo‘natadi va yangi access token oladi.
-    """
-    permission_classes = [AllowAny]
-
-
 class AdminProfileAPIView(APIView):
-    """
-    Admin foydalanuvchi o‘z profil ma'lumotlarini olish API.
-    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -120,6 +88,27 @@ class AdminProfileAPIView(APIView):
             "is_superuser": user.is_superuser,
         }
         return Response(data, status=status.HTTP_200_OK)
+
+class AdminUpdateProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        user.username = request.data.get("username", user.username)
+        user.email = request.data.get("email", user.email)
+        user.save()
+        return Response({"message": "Profil muvaffaqiyatli yangilandi"}, status=status.HTTP_200_OK)
+
+class AdminTokenRefreshAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            request.user.auth_token.delete()
+            token = Token.objects.create(user=request.user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

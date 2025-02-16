@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from api.admin_views import (
     OrderViewSet, ProductViewSet, DeliveryViewSet, RatingViewSet, OrderItemsViewSet,
     SalesStatisticsAPIView, AdminLoginAPIView, AdminLogoutAPIView,
-    AdminProfileAPIView, UserViewSet, AdminTokenRefreshView
+    AdminProfileAPIView, UserViewSet, AdminTokenRefreshAPIView, AdminUpdateProfileAPIView
 )
 
 router = DefaultRouter()
@@ -22,8 +22,8 @@ urlpatterns = [
     
     # Logout (Tokenni o‘chirish)
     path("logout/", AdminLogoutAPIView.as_view(), name="admin-logout"),
-
+    path("profile/update", AdminUpdateProfileAPIView.as_view(), name="admin-update-profile"),
     # Access token olish (Refresh token orqali yangilash)
-    path("token/refresh/", AdminTokenRefreshView.as_view(), name="token-refresh"),
+    path("token/refresh/", AdminTokenRefreshAPIView.as_view(), name="token-refresh"),
     path("profile/", AdminProfileAPIView.as_view(), name="admin-profile"),
 ]

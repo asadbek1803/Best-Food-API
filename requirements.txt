@@ -13,4 +13,3 @@ dj-database-url
 requests
 whitenoise
 django-cors-headers
-djangorestframework-simplejwt
