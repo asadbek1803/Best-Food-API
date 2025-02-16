@@ -13,6 +13,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, get_user_model
 from .models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView
 
 user = get_user_model()
 
@@ -51,40 +53,55 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Order.objects.all().order_by("-created_at")  # ✅ To‘g‘ri
 
 
-
 class AdminLoginAPIView(APIView):
     """
     Admin foydalanuvchilar uchun login API.
-    Foydalanuvchi login parolni jo‘natadi va access_token oladi.
+    Foydalanuvchi login va parolni jo‘natadi va JWT tokenlar oladi.
     """
     permission_classes = [AllowAny]
-    authentication_classes = []  # Token tekshirishni o‘chiradi
-    
+
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
 
         user = authenticate(username=username, password=password)
 
-        if user is not None:
-            # Faqat adminlarni kiritamiz
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key}, status=status.HTTP_200_OK)
-        
-        
-        return Response({"error": "Noto‘g‘ri login yoki parol"}, status=status.HTTP_400_BAD_REQUEST)
+        if user is not None and user.is_staff:  # Faqat adminlarni kiritamiz
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            }, status=status.HTTP_200_OK)
 
+        return Response({"error": "Noto‘g‘ri login yoki parol"}, status=status.HTTP_400_BAD_REQUEST)
 
 class AdminLogoutAPIView(APIView):
     """
     Admin foydalanuvchilar uchun logout API.
-    Tokenni o‘chirib tashlaydi.
+    Refresh tokenni qora ro‘yxatga tushiradi.
     """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        request.auth.delete()  # Tokenni o‘chiramiz
-        return Response({"message": "Chiqish muvaffaqiyatli bajarildi"}, status=status.HTTP_200_OK)
+        try:
+            refresh_token = request.data.get("refresh")
+            if not refresh_token:
+                return Response({"error": "Refresh token talab qilinadi!"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            token = RefreshToken(refresh_token)
+            token.blacklist()  # Refresh tokenni qora ro‘yxatga tushiramiz
+
+            return Response({"message": "Chiqish muvaffaqiyatli bajarildi"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AdminTokenRefreshView(TokenRefreshView):
+    """
+    Admin foydalanuvchilar uchun token yangilash API.
+    Foydalanuvchi refresh tokenni jo‘natadi va yangi access token oladi.
+    """
+    permission_classes = [AllowAny]
 
 
 class AdminProfileAPIView(APIView):
