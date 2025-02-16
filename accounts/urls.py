@@ -6,12 +6,12 @@ from api.admin_views import (
 )
 
 router = DefaultRouter()
-router.register(r'orders', OrderViewSet)
-router.register(r'products', ProductViewSet)
-router.register(r'delivery', DeliveryViewSet)
-router.register(r'ratings', RatingViewSet)
-router.register(r'users', UserViewSet)
-router.register(r'order/items', OrderItemsViewSet)
+router.register(r'orders', OrderViewSet, basename="admin-orders")
+router.register(r'products', ProductViewSet, basename="admin-products")
+router.register(r'delivery', DeliveryViewSet, basename="admin-delivery")
+router.register(r'ratings', RatingViewSet, basename="admin-ratings")
+router.register(r'users', UserViewSet, basename="admin-users")
+router.register(r'order/items', OrderItemsViewSet, basename="admin-order-itmes")
 
 urlpatterns = [
     path('', include(router.urls)),
