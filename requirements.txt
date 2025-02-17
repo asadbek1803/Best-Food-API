@@ -13,3 +13,4 @@ dj-database-url
 requests
 whitenoise
 django-cors-headers
+Pillow
