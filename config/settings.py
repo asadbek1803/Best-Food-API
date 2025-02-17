@@ -184,6 +184,20 @@ STATICFILES_DIRS = [
 MEDIA_URL = env.str("MEDIA_URL", "/media/")
 MEDIA_ROOT = BASE_DIR / env.str("MEDIA_ROOT", "media")
 
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",  # Lokal media fayllar uchun
+        "OPTIONS": {
+            "location": MEDIA_ROOT,  # MEDIA_ROOT papkasiga yuklaydi
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
