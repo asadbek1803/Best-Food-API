@@ -89,7 +89,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategoryForProduct()
     name = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
 
