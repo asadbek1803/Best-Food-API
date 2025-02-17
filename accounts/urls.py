@@ -7,7 +7,7 @@ from api.admin_views import (
     AdminTokenRefreshAPIView, AdminUpdateProfileAPIView, CategoriesViewSet
 )
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register(r'orders', OrderViewSet, basename="admin-orders")
 router.register(r'products', ProductViewSet, basename="admin-products")
 router.register(r'delivery', DeliveryViewSet, basename="admin-delivery")
