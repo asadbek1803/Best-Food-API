@@ -69,7 +69,7 @@ class CategorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Category
-        exclude = ['uz_name', 'ru_name', 'en_name', 'uz_description', 'ru_description', 'en_description']  
+        fields = '__all__'
 
     
 
@@ -77,7 +77,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        exclude = ['uz_name', 'ru_name', 'en_name', 'uz_description', 'ru_description', 'en_description']
+        fields = '__all__'
 
     
 

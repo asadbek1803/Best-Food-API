@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework.authtoken',
     "django_filters",
-    "modeltranslation",
     "drf_yasg",
     "corsheaders",
     
@@ -84,8 +83,7 @@ LANGUAGES = (
     ('ru', 'Russian'),
 )
 
-# ModelTranslation kutubxonasida asosiy til
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+
 AUTH_USER_MODEL = 'accounts.User'
 # Agar Django admin panelida tarjima qilishni xohlasangiz
 LOCALE_PATHS = [
