@@ -120,6 +120,14 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
 
+class CategoriesViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+
 class DeliveryViewSet(viewsets.ModelViewSet):
     queryset = Delivery.objects.all()
     serializer_class = DeliverySerializer
@@ -128,12 +136,6 @@ class DeliveryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
 
-class CategoriesViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    pagination_class = StandardResultsSetPagination
-    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class RatingViewSet(viewsets.ModelViewSet):

@@ -14,7 +14,8 @@ router.register(r'delivery', DeliveryViewSet, basename="admin-delivery")
 router.register(r'ratings', RatingViewSet, basename="admin-ratings")
 router.register(r'users', UserViewSet, basename="admin-users")
 router.register(r'order/items', OrderItemsViewSet, basename="admin-order-itmes")
-router.register(r'categories', CategoriesViewSet, basename="admin-categories")
+router.register(r'categories', CategoriesViewSet, basename="categories")
+
 
 urlpatterns = [
     path('', include(router.urls)),
