@@ -123,8 +123,6 @@ class ProductViewSet(viewsets.ModelViewSet):
 class CategoriesViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, IsAdminUser]
 
 
