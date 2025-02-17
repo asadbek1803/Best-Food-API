@@ -14,12 +14,13 @@ router.register(r'delivery', DeliveryViewSet, basename="admin-delivery")
 router.register(r'ratings', RatingViewSet, basename="admin-ratings")
 router.register(r'users', UserViewSet, basename="admin-users")
 router.register(r'order/items', OrderItemsViewSet, basename="admin-order-itmes")
-router.register(r'categories', CategoriesViewSet, basename="categories")
+
 
 
 urlpatterns = [
     path('', include(router.urls)),
     path('statistics/', SalesStatisticsAPIView.as_view(), name='sales-statistics'),
+    path('categories', CategoriesViewSet.as_view({'get': 'list'}), name="categories-list"),
      # Login (Access & Refresh token oladi)
     path("login/", AdminLoginAPIView.as_view(), name="admin-login"),
     
