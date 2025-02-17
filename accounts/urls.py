@@ -9,7 +9,7 @@ from api.admin_views import (
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'orders', OrderViewSet, basename="admin-orders")
-router.register(r'products', ProductViewSet, basename="admin-products")
+router.register(r'view/products', ProductViewSet, basename="admin-products")
 router.register(r'delivery', DeliveryViewSet, basename="admin-delivery")
 router.register(r'ratings', RatingViewSet, basename="admin-ratings")
 router.register(r'users', UserViewSet, basename="admin-users")
